@@ -96,8 +96,8 @@ for out in outs:
 indexes = cv2.dnn.NMSBoxes(boxes, confidences, 0.5, 0.4)
 
 
-''' 
-for testing purposes - getting and printing confidence scores
+ 
+#for testing purposes - getting and printing confidence scores
 
 
 # looping through the max confidence objects to draw a box around them
@@ -121,9 +121,14 @@ for i in range(len(boxes)):
         cv2.putText(img,f'{int(confidences[i]*100)}%  {label}',
                 (x, y-10), confidence_font, font_s[0], (0,0,255), int(font_s[1]))
 
-'''
-
 print(len(indexes))
+for i in range(len(boxes)):
+    if i in indexes:
+        label = classes[class_ids[i]]
+        print(label)
+
+# shows the image
+cv2.imwrite("Image.jpg", img)
 
 # attempting to delete the captured image
 try: 
