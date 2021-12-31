@@ -4,6 +4,17 @@
 
 import cv2
 import numpy as np
+import os
+
+
+
+cam = cv2.VideoCapture(0)
+ret, frame = cam.read()
+if not ret:
+    print("failed to grab frame")
+    exit()
+cv2.imwrite("out_img.jpg", frame)
+
 
 # Load YOLO
 
@@ -20,7 +31,7 @@ layers_names = net.getLayerNames()
 output_layers = [layers_names[i[0] - 1] for i in net.getUnconnectedOutLayers()]
 
 # creates image object
-img = cv2.imread("pexels-photo-777157.jpeg")
+img = cv2.imread("out_img.jpg")
 
 # shrinks the image window
 img = cv2.resize(img, None, fx=1, fy=1)
@@ -84,11 +95,14 @@ for out in outs:
 # (only one box is drawn per car)
 indexes = cv2.dnn.NMSBoxes(boxes, confidences, 0.5, 0.4)
 
-# looping through the max confidence objects to draw a box around them
 
+''' 
+for testing purposes - getting and printing confidence scores
+
+
+# looping through the max confidence objects to draw a box around them
 confidence_font = cv2.FONT_HERSHEY_SIMPLEX
 box_colours =  np.random.uniform(0 ,255, size=(len(boxes) , 3)) 
-
 
 for i in range(len(boxes)):
     if i in indexes:
@@ -107,8 +121,23 @@ for i in range(len(boxes)):
         cv2.putText(img,f'{int(confidences[i]*100)}%  {label}',
                 (x, y-10), confidence_font, font_s[0], (0,0,255), int(font_s[1]))
 
+'''
 
-# shows the image
-cv2.imwrite("OutputImage.jpg", img)
+print(len(indexes))
+
+# attempting to delete the captured image
+try: 
+    os.remove("out_img.jpg")
+except: pass
+
+
+
+
+
+
+
+
+
+
 
 
